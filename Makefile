@@ -1,4 +1,4 @@
-OBJS=main.cpp
+OBJS=main.cpp game.cpp
 OBJ_NAME=app
 COMPILER=g++
 LINKER_FLAGS=`sdl2-config --cflags --libs`
