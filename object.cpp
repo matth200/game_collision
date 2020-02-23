@@ -73,6 +73,20 @@ Perso::~Perso()
 {
     delete _anim;
 }
+void Perso::turnRight(int iMin, int iMax)
+{
+    _anim->setCycle(iMin,iMax);
+    _anim->start();
+}
+void Perso::turnLeft(int iMin, int iMax)
+{
+    _anim->setCycle(iMin,iMax);
+    _anim->start();
+}
+void Perso::stopMoving()
+{
+    _anim->stop();
+}
 Animation* Perso::getAnimation()
 {
     return _anim;

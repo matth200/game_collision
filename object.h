@@ -35,6 +35,9 @@ class Perso : public Object
         Perso(double x,double y, int w, int h);
         ~Perso();
         void draw(SDL_Renderer *renderer);
+        void turnRight(int iMin, int iMax);
+        void turnLeft(int iMin, int iMax);
+        void stopMoving();
         void jump(int size = 2);
         Animation* getAnimation();
     protected:

@@ -97,19 +97,19 @@ while continuer:
 
     #texte en bas
     pygame.draw.rect(screen,(250,100,100),pygame.Rect(250*1-100,height+20,square_w,square_h))
-    texte = font.render("bloc normal(click gauche)",True,(0,0,0))
+    texte = font.render("bloc normal(click gauche)",True,(0,0,0))#1
     pygame.Surface.blit(screen,texte,(250*1-50,height+30))
 
     pygame.draw.rect(screen,(0,0,0),pygame.Rect(250*2-100,height+20,square_w,square_h))
-    texte = font.render("bloc vide(click droit)",True,(0,0,0))
+    texte = font.render("bloc vide(click droit)",True,(0,0,0))#0
     pygame.Surface.blit(screen,texte,(250*2-50,height+30))
 
     pygame.draw.rect(screen,(100,250,100),pygame.Rect(250*3-100,height+20,square_w,square_h))
-    texte = font.render("bloc de fin(click gauche+z)",True,(0,0,0))
+    texte = font.render("bloc de fin(click gauche+z)",True,(0,0,0))#3
     pygame.Surface.blit(screen,texte,(250*3-50,height+30))
 
     pygame.draw.rect(screen,(0,100,100),pygame.Rect(250*4-100,height+20,square_w,square_h))
-    texte = font.render("bloc de départ du joueur(click gauche+a)",True,(0,0,0))
+    texte = font.render("bloc de départ du joueur(click gauche+a)",True,(0,0,0))#2
     pygame.Surface.blit(screen,texte,(250*4-50,height+30))
 
 

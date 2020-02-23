@@ -4,16 +4,29 @@
 #include <SDL2/SDL.h>
 #include <fstream>
 #include <vector>
+#include <regex>
+
+#include "draw.h"
 
 class MapLoader
 {
     public:
         MapLoader(const char *filename);
         ~MapLoader();
-        void drawMap(SDL_Renderer *renderer,int x, int y);
+        bool load(int square_w, int square_h);
+        bool isLoad();
+        bool isFinish(int x, int y);
+        void getPosToStart(int &x, int &y);
+        void getPosEnd(int &x, int &y);
+        void drawMap(SDL_Renderer *renderer);
     protected:
-        int _w, _h;
-        std::vector<char> _map;
+        int _nbrX, _nbrY;
+        int _square_w, _square_h;
+        int _xStart, _yStart;
+        int _xEnd, _yEnd;
+        std::string _map_filename;
+        //std::vector<Object> _mapObject;
+        std::vector<unsigned char> _map;
 };
 
 #endif

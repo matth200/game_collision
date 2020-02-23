@@ -6,10 +6,14 @@
 #include <map>
 
 #include "draw.h"
-#include "object.h"
+#include "world.h"
 
 #define WIDTH 1280
 #define HEIGHT 720
+
+#define RIGHT_KEY SDLK_d
+#define LEFT_KEY SDLK_q
+#define JUMP_KEY SDLK_SPACE
 
 #define FPS 60.0
 
@@ -28,7 +32,7 @@ class Game
         void noticeError(const char* msg);
         bool getState()const {return _state;}
     protected:
-        Perso *_perso;
+        World *_world;
 
         SDL_Window *_window;
         SDL_Renderer *_renderer;

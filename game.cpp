@@ -14,15 +14,12 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(0){
     if(_renderer == NULL)
         noticeError("problème de createRenderer()");
 
-    _perso = new Perso(50,50,40,50);
-    _perso->getAnimation()->addImage(_renderer,"images/spaceman.png",10,2,63,76);
-    _perso->getAnimation()->setTime(100);
-    _perso->getAnimation()->setCycle(0,9);//cycle sur l'image
+    _world = new World(_renderer);
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
 Game::~Game(){
-    delete _perso;
+    delete _world;
 
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
@@ -38,18 +35,12 @@ void Game::core(){
         if(getClicked(SDLK_ESCAPE))
             quit();
 
-        if(getClicked(SDLK_RIGHT))
-        {
-            _perso->getAnimation()->start();
-            _perso->getAnimation()->setCycle(0,9);
-        }
-        else if(getClicked(SDLK_LEFT))
-        {
-            _perso->getAnimation()->start();
-            _perso->getAnimation()->setCycle(10,19);
-        }
-        if(!getKeydown(SDLK_RIGHT)&&!getKeydown(SDLK_LEFT))
-            _perso->getAnimation()->stop();
+        if(getClicked(RIGHT_KEY))
+            _world->getPerso()->turnRight(0,9);
+        else if(getClicked(LEFT_KEY))
+            _world->getPerso()->turnRight(10,19);
+        if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
+            _world->getPerso()->stopMoving();
             
         draw();
 
@@ -67,7 +58,7 @@ void Game::draw()
     SDL_SetRenderDrawColor(_renderer,100,100,100,255);
     SDL_RenderClear(_renderer);
 
-    _perso->draw(_renderer);
+    _world->draw(_actuelFPS);
 
     SDL_RenderPresent(_renderer);
 }

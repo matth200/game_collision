@@ -1,4 +1,4 @@
-OBJS=main.cpp game.cpp draw.cpp object.cpp
+OBJS=main.cpp game.cpp draw.cpp object.cpp maploader.cpp world.cpp
 OBJ_NAME=app
 COMPILER=g++
 LINKER_FLAGS=`sdl2-config --cflags --libs` -lSDL2_image
