@@ -6,6 +6,7 @@
 #include <map>
 
 #include "draw.h"
+#include "object.h"
 
 #define WIDTH 1280
 #define HEIGHT 720
@@ -27,7 +28,7 @@ class Game
         void noticeError(const char* msg);
         bool getState()const {return _state;}
     protected:
-        Animation _perso;
+        Perso *_perso;
 
         SDL_Window *_window;
         SDL_Renderer *_renderer;

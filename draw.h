@@ -17,7 +17,7 @@ public:
     void stop();
     void addImage(SDL_Renderer *renderer, const char* filename,int nbrX, int nbrY, int w, int h);
     void setCycle(int indexFirst, int indexLast);
-    void draw(SDL_Renderer *renderer, int x, int y);
+    void draw(SDL_Renderer *renderer, int x, int y, int w, int h);
 protected:
     unsigned int _startTime;
     SDL_Texture *_texture;

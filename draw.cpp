@@ -43,7 +43,7 @@ void Animation::setCycle(int indexFirst, int indexLast)
 
     _targetTexture = _indexMin;
 }
-void Animation::draw(SDL_Renderer *renderer, int x, int y)
+void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
     if(_texture!=NULL)
     {
@@ -58,7 +58,7 @@ void Animation::draw(SDL_Renderer *renderer, int x, int y)
             _startTime += _ms;
         }
         //affichage de la texture en question
-        SDL_Rect srcRect = {_targetTexture%_nbrX*_w,int(_targetTexture/_nbrX)*_h,_w,_h}, dstRect = {x,y,_w,_h};
+        SDL_Rect srcRect = {_targetTexture%_nbrX*_w,int(_targetTexture/_nbrX)*_h,_w,_h}, dstRect = {x,y,w,h};
         SDL_RenderCopy(renderer,_texture,&srcRect,&dstRect);
     }
     else

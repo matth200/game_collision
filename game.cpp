@@ -14,14 +14,16 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(0){
     if(_renderer == NULL)
         noticeError("problème de createRenderer()");
 
-
-    _perso.addImage(_renderer,"images/spaceman.png",10,2,63,76);
-    _perso.setTime(100);
-    _perso.setCycle(0,9);//droite
+    _perso = new Perso(50,50,40,50);
+    _perso->getAnimation()->addImage(_renderer,"images/spaceman.png",10,2,63,76);
+    _perso->getAnimation()->setTime(100);
+    _perso->getAnimation()->setCycle(0,9);//cycle sur l'image
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
 Game::~Game(){
+    delete _perso;
+
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
@@ -38,16 +40,16 @@ void Game::core(){
 
         if(getClicked(SDLK_RIGHT))
         {
-            _perso.start();
-            _perso.setCycle(0,9);
+            _perso->getAnimation()->start();
+            _perso->getAnimation()->setCycle(0,9);
         }
         else if(getClicked(SDLK_LEFT))
         {
-            _perso.start();
-            _perso.setCycle(10,19);
+            _perso->getAnimation()->start();
+            _perso->getAnimation()->setCycle(10,19);
         }
         if(!getKeydown(SDLK_RIGHT)&&!getKeydown(SDLK_LEFT))
-            _perso.stop();
+            _perso->getAnimation()->stop();
             
         draw();
 
@@ -62,10 +64,10 @@ void Game::core(){
 }
 void Game::draw()
 {
-    SDL_SetRenderDrawColor(_renderer,255,255,255,0);
+    SDL_SetRenderDrawColor(_renderer,100,100,100,255);
     SDL_RenderClear(_renderer);
 
-    _perso.draw(_renderer,50,50);
+    _perso->draw(_renderer);
 
     SDL_RenderPresent(_renderer);
 }
