@@ -15,8 +15,9 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(0){
         noticeError("problème de createRenderer()");
 
 
-    _perso.addImage(_renderer,"images/Ninjas.png",10,6,90,135);
-    _perso.setCycle(52,60);//mourir
+    _perso.addImage(_renderer,"images/spaceman.png",10,2,63,76);
+    _perso.setTime(100);
+    _perso.setCycle(0,9);//droite
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
@@ -35,6 +36,13 @@ void Game::core(){
         if(getClicked(SDLK_ESCAPE))
             quit();
 
+        if(getClicked(SDLK_RIGHT))
+            _perso.setCycle(0,9);
+        else if(getClicked(SDLK_LEFT))
+            _perso.setCycle(10,19);
+        if(!getKeydown(SDLK_RIGHT)&&!getKeydown(SDLK_LEFT))
+            _perso.setCycle(10,10);
+            
         draw();
 
         //bien mais pas trés précis refaire avec chrono::high_resolution_clock
@@ -65,15 +73,29 @@ void Game::manageEvent()
                 quit();
                 break;
             case SDL_KEYDOWN:
+                if(_keys[_events.key.keysym.sym]!=1)
+                    _changeKeys[_events.key.keysym.sym] = 1;
                 _keys[_events.key.keysym.sym] = 1;
                 break;
             case SDL_KEYUP:
+                if(_keys[_events.key.keysym.sym]!=0)
+                    _changeKeys[_events.key.keysym.sym] = 1;
                 _keys[_events.key.keysym.sym] = 0;
                 break;
         }
     }
 }
 bool Game::getClicked(int key)
+{
+    bool clicked = 0;
+
+    if(_keys[key]&&_changeKeys[key])
+        clicked = 1;
+        _changeKeys[key] = 0;
+
+    return clicked;
+}
+bool Game::getKeydown(int key)
 {
     bool clicked = 0;
 

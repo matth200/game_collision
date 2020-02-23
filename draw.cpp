@@ -23,6 +23,10 @@ void Animation::addImage(SDL_Renderer *renderer, const char* filename,int nbrX, 
     _texture = SDL_CreateTextureFromSurface(renderer,image);
     SDL_FreeSurface(image);
 }
+void Animation::setTime(int ms)
+{
+    _ms = ms;
+}
 void Animation::setCycle(int indexFirst, int indexLast)
 {
     _indexMin = indexFirst;

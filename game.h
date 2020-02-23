@@ -23,6 +23,7 @@ class Game
         void manageEvent();
         void draw();
         bool getClicked(int key);
+        bool getKeydown(int key);
         void noticeError(const char* msg);
         bool getState()const {return _state;}
     protected:
@@ -32,7 +33,7 @@ class Game
         SDL_Renderer *_renderer;
         SDL_Event _events;
         unsigned int _start;
-        std::map<int,bool> _keys;
+        std::map<int,bool> _keys, _changeKeys;
         double _actuelFPS;
         bool _state;
  };
