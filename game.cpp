@@ -37,11 +37,17 @@ void Game::core(){
             quit();
 
         if(getClicked(SDLK_RIGHT))
+        {
+            _perso.start();
             _perso.setCycle(0,9);
+        }
         else if(getClicked(SDLK_LEFT))
+        {
+            _perso.start();
             _perso.setCycle(10,19);
+        }
         if(!getKeydown(SDLK_RIGHT)&&!getKeydown(SDLK_LEFT))
-            _perso.setCycle(10,10);
+            _perso.stop();
             
         draw();
 

@@ -4,10 +4,19 @@ using namespace std;
 Animation::Animation(int ms):_ms(ms),_targetTexture(0),_w(0),_h(0), _nbrX(0), _nbrY(0), _indexMin(0), _indexMax(0)
 {
     _startTime = SDL_GetTicks();
+    _continuer = 1;
 }
 Animation::~Animation()
 {
     SDL_DestroyTexture(_texture);
+}
+void Animation::start()
+{
+    _continuer = 1;
+}
+void Animation::stop()
+{
+    _continuer = 0;
 }
 void Animation::addImage(SDL_Renderer *renderer, const char* filename,int nbrX, int nbrY, int w, int h)
 {
@@ -41,7 +50,8 @@ void Animation::draw(SDL_Renderer *renderer, int x, int y)
         if(SDL_GetTicks()-_startTime>=_ms)
         {
             //changement de la texture à afficher
-            _targetTexture++;
+            if(_continuer)
+                _targetTexture++;
             if(_targetTexture>_indexMax)
                 _targetTexture = _indexMin;
                 
