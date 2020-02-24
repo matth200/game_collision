@@ -3,6 +3,7 @@
     "files.associations": {
         "cmath": "cpp",
         "complex": "cpp",
-        "iosfwd": "cpp"
+        "iosfwd": "cpp",
+        "string": "cpp"
     }
 }

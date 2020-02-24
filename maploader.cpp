@@ -73,7 +73,15 @@ bool MapLoader::load(int square_w, int square_h)
     }
     return 1;
 }
-
+void MapLoader::getSize(int &nbrX, int &nbrY)
+{
+    nbrX = _nbrX;
+    nbrY = _nbrY;
+}
+vector<unsigned char>* MapLoader::getMap()
+{
+    return &_map;
+}
 bool MapLoader::isLoad()
 {
     return (_square_w!=0&&_square_h!=0&&_map.size()>0);

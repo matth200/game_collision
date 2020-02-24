@@ -1,7 +1,7 @@
 #include "game.h"
 using namespace std;
 
-Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(0){
+Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
 
     if(SDL_Init(SDL_INIT_VIDEO)<0)
         noticeError("problème de init()");

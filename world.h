@@ -12,11 +12,13 @@ class World
         World(SDL_Renderer *renderer);
         ~World();
         void setGravity(double value);
-        void manageCollision();
+        bool getCollision(Object *b);
+        void manageMouvement(Object *b, double fps);
         Perso* getPerso();
-        void draw(double FPS);
+        void draw(double fps);
     protected:
         Perso *_perso;
+        int _uniteX, _uniteY;
         MapLoader *_map;
         std::vector<Object*> _objects;
         double _gravity;

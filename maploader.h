@@ -16,8 +16,10 @@ class MapLoader
         bool load(int square_w, int square_h);
         bool isLoad();
         bool isFinish(int x, int y);
+        void getSize(int &nbrX, int &nbrY);
         void getPosToStart(int &x, int &y);
         void getPosEnd(int &x, int &y);
+        std::vector<unsigned char>* getMap();
         void drawMap(SDL_Renderer *renderer);
     protected:
         int _nbrX, _nbrY;
