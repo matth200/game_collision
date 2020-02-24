@@ -67,7 +67,9 @@ bool World::getCollision(Object *b)
 void World::manageMouvement(Object *b, double fps)
 {
     b->startMove();
-    bool collisionX, collisionY;
+    bool collisionX = 0, collisionY = 0;
+    bool vertical = 0, horizontal = 0;
+    bool onceX = 1, onceY = 1;
     while(b->movePixel(fps))
     {
         collisionX = 0;
@@ -85,15 +87,50 @@ void World::manageMouvement(Object *b, double fps)
         {
             collisionY = 1;
             b->backPixelY(fps);
-            b->setForceY(0);
         }
 
+        //test de collision
+        if(collisionX&&b->getForceX()>=0&&onceX)//cote droit
+        {
+            horizontal = 0;
+            onceX = 0;
+        }
+        if(collisionX&&b->getForceX()<0&&onceX)//cote gauche
+        {
+            horizontal = 1;
+            onceX = 0;
+        }
+        if(collisionY&&b->getForceY()>=0&&onceY)//bas
+        {
+            vertical = 1;
+            onceY = 0;
+        }
+        if(collisionY&&b->getForceY()<0&&onceY)//haut
+        {
+            vertical = 0;
+            onceY = 0;
+        }
+        //on enleve les forces si collision
         if(collisionX)
             b->setForceX(0);
+        if(collisionY)
+            b->setForceY(0);
 
         if(collisionX&&collisionY)
             b->endMove();
     }
+    //recuperer quel cote de l'objet est touche
+    char collision = 0;
+    if(!onceX&&horizontal==0)//cote droit
+        collision = collision | MASK_RIGHT;
+    if(!onceX&&horizontal==1)//cote gauche
+        collision = collision | MASK_LEFT;
+    if(!onceY&&vertical==1)//bas
+        collision = collision | MASK_BOTTOM;
+    if(!onceY&&vertical==0)//haut
+        collision = collision | MASK_TOP;
+
+    b->setCollision(collision);
 }
 void World::draw(double fps)
 {
@@ -106,4 +143,12 @@ void World::draw(double fps)
     //Affichage
     _map->drawMap(_renderer);
     _perso->draw(_renderer);
+     if(_perso->getStateCollision(MASK_BOTTOM))
+    {
+        SDL_SetRenderDrawColor(_renderer,255,0,0,255);
+        int x = _perso->getPosX(),y = _perso->getPosY();
+        int w,h;
+        _perso->getSize(w,h);
+        SDL_RenderDrawLine(_renderer,x,y+h,x+w,y+h);
+    }
 }

@@ -1,7 +1,7 @@
 #include "object.h"
 using namespace std;
 
-Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_forceX(0),_forceY(0),_id(0),_inMove(-1)
+Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_forceX(0),_forceY(0),_id(0),_inMove(-1),_collisionState(-1)
 {
 }
 Object::~Object()
@@ -12,6 +12,14 @@ void Object::move(double fps)
     //SDL_Log((to_string(_x)+" "+to_string(_y)).c_str());
     _x+=_forceX/fps;
     _y+=_forceY/fps;
+}
+void Object::setCollision(char state)
+{
+    _collisionState = state;
+}
+bool Object::getStateCollision(char state)
+{
+    return _collisionState & state;
 }
 void Object::startMove()
 {
@@ -125,7 +133,7 @@ void Object::draw(SDL_Renderer *renderer)
     SDL_RenderDrawRect(renderer,&rect);
 }
 
-Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),Object(x,y,w,h)
+Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),_nbrJump(0),Object(x,y,w,h)
 {
     _id = 1;
     _anim = new Animation();
@@ -136,7 +144,11 @@ Perso::~Perso()
 }
 void Perso::jump(double size)
 {
-    _forceY-=size*_h;
+    if(_nbrJump<_nbrJumpMax)
+    {
+        _forceY-=size*_h;
+        _nbrJump++;
+    }
 }
 void Perso::turnRight(int iMin, int iMax)
 {
@@ -161,6 +173,9 @@ Animation* Perso::getAnimation()
 }
 void Perso::draw(SDL_Renderer *renderer)
 {
+    if(_collisionState & MASK_BOTTOM)
+        _nbrJump = 0;
+
     _anim->draw(renderer,_x,_y,_w,_h);
     SDL_Rect rect = {int(_x),int(_y),_w,_h};
     //SDL_SetRenderDrawColor(renderer,255,100,100,255);

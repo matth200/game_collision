@@ -6,11 +6,18 @@
 #define PI 3.14159265
 #define FORCE 40*3
 
+#define MASK_RIGHT (1<<0)
+#define MASK_LEFT (1<<1)
+#define MASK_BOTTOM (1<<2)
+#define MASK_TOP (1<<3)
+
 class Object
 {
     public:
         Object(double x,double y, int w, int h);
         ~Object();
+        void setCollision(char state);
+        bool getStateCollision(char state);
         void move(double fps);
         void setPos(double x,double y);
         void getSize(int &w, int &h);
@@ -40,6 +47,7 @@ class Object
         int _w,_h;
         int _inMove;
         double _forceX, _forceY;
+        char _collisionState;
 };
 
 
@@ -56,6 +64,6 @@ class Perso : public Object
         Animation* getAnimation();
     protected:
         Animation *_anim;
-        int _nbrJumpMax;
+        int _nbrJumpMax,_nbrJump;
         
 };
