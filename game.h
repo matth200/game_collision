@@ -2,8 +2,12 @@
 #define INCLUDE_GAME
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
 #include <iostream>
+#include <vector>
 #include <map>
+#include <filesystem>
 
 #include "draw.h"
 #include "world.h"
@@ -25,6 +29,7 @@ class Game
         void core();
         void quit(int state=0){_state=state;}
 
+        void loadMap(const char* folder);
         void manageEvent();
         void draw();
         bool getClicked(int key);
@@ -39,6 +44,7 @@ class Game
         SDL_Event _events;
         unsigned int _start;
         std::map<int,bool> _keys, _changeKeys;
+        std::vector<std::string> _listMap;
         double _actuelFPS;
         bool _state;
  };

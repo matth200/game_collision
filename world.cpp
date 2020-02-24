@@ -1,10 +1,10 @@
 #include "world.h"
 using namespace std;
 
-World::World(SDL_Renderer *renderer):_uniteX(40),_uniteY(40),_gravity(9.81)//gravite terrestre
+World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40),_finished(0),_gravity(16)//gravite terrestre
 {
     _renderer = renderer;
-    _map = new MapLoader("levels/0.level");
+    _map = new MapLoader(fileMap);
     _map->load(_uniteX,_uniteY);
 
     int x,y;
@@ -32,10 +32,10 @@ World::World(SDL_Renderer *renderer):_uniteX(40),_uniteY(40),_gravity(9.81)//gra
         }
     }
 
-    _perso = new Perso(x,y,50,50);
+    _perso = new Perso(x,y,70,70);
     _perso->getAnimation()->addImage(_renderer,"images/adventurer-Sheet.png",7,11,50,37);
-    _perso->centerCollision(30,50);
-    _perso->getAnimation()->setTime(150);
+    _perso->centerCollision(30,70);
+    _perso->getAnimation()->setTime(100);
     _perso->getAnimation()->setCycle(0,3);//cycle sur l'image
 
 }
@@ -44,6 +44,10 @@ World::~World()
     delete _perso;
     for( auto ob : _objects)
         delete ob;
+}
+bool World::isFinish() const
+{
+    return _finished;
 }
 Perso* World::getPerso()
 {
@@ -146,5 +150,5 @@ void World::draw(double fps)
     _perso->draw(_renderer);
     
     //affichage des collision
-    _perso->drawCollision(_renderer);
+    //_perso->drawCollision(_renderer);
 }

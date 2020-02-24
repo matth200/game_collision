@@ -7,7 +7,7 @@ FPS = 30.0
 pygame.init()
 pygame.font.init()
 
-width, height = 1200,600
+width, height = 1280,720
 size = width, height+70
 square_w, square_h = 40,40
 

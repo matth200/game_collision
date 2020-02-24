@@ -9,8 +9,9 @@
 class World
 {
     public:
-        World(SDL_Renderer *renderer);
+        World(SDL_Renderer *renderer,const char *fileMap);
         ~World();
+        bool isFinish() const;
         void setGravity(double value);
         bool getCollision(Object *b);
         void manageMouvement(Object *b, double fps);
@@ -22,6 +23,7 @@ class World
         MapLoader *_map;
         std::vector<Object*> _objects;
         double _gravity;
+        bool _finished;
         SDL_Renderer *_renderer;
 };
 

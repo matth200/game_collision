@@ -6,6 +6,9 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
     if(SDL_Init(SDL_INIT_VIDEO)<0)
         noticeError("problème de init()");
 
+    if(TTF_Init()<0)
+        noticeError("problème de initTTF()");
+
     _window = SDL_CreateWindow("Test de fenêtre",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,WIDTH,HEIGHT,SDL_WINDOW_SHOWN);
     if( _window == NULL)
         noticeError("problème de createWindow()");
@@ -14,7 +17,8 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
     if(_renderer == NULL)
         noticeError("problème de createRenderer()");
 
-    _world = new World(_renderer);
+    loadMap("levels");
+    _world = new World(_renderer,_listMap[1].c_str());
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
@@ -23,9 +27,22 @@ Game::~Game(){
 
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
+
+    TTF_Quit();
     SDL_Quit();
 }
+void Game::loadMap(const char *folder)
+{
+    std::filesystem::directory_iterator folderPath(folder);
 
+    _listMap.clear();
+    _listMap.resize(0);
+    for( auto& file : folderPath)
+    {
+        _listMap.push_back(string(file.path()));
+        SDL_Log((string("file:")+string(file.path())).c_str());
+    }
+}
 void Game::core(){
     while(_state==1)
     {
