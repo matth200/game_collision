@@ -35,10 +35,12 @@ void Game::core(){
         if(getClicked(SDLK_ESCAPE))
             quit();
 
-        if(getClicked(RIGHT_KEY))
+        if(getKeydown(RIGHT_KEY))
             _world->getPerso()->turnRight(0,9);
-        else if(getClicked(LEFT_KEY))
-            _world->getPerso()->turnRight(10,19);
+        else if(getKeydown(LEFT_KEY))
+            _world->getPerso()->turnLeft(10,19);
+        if(getClicked(JUMP_KEY))
+            _world->getPerso()->jump();
         if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
             _world->getPerso()->stopMoving();
             

@@ -38,10 +38,11 @@ void Animation::setTime(int ms)
 }
 void Animation::setCycle(int indexFirst, int indexLast)
 {
+    if(_indexMin!=indexFirst&&_indexMax!=indexLast)
+        _targetTexture = indexFirst;
+        
     _indexMin = indexFirst;
     _indexMax = indexLast;
-
-    _targetTexture = _indexMin;
 }
 void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {

@@ -56,6 +56,10 @@ void Object::setId(int id)
 {
     _id = id;
 }
+int Object::getId() const
+{
+    return _id;
+}
 void Object::setPos(double x,double y)
 {
     _x = x;
@@ -121,7 +125,7 @@ void Object::draw(SDL_Renderer *renderer)
     SDL_RenderDrawRect(renderer,&rect);
 }
 
-Perso::Perso(double x,double y, int w, int h):_anim(0),Object(x,y,w,h)
+Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),Object(x,y,w,h)
 {
     _id = 1;
     _anim = new Animation();
@@ -129,6 +133,10 @@ Perso::Perso(double x,double y, int w, int h):_anim(0),Object(x,y,w,h)
 Perso::~Perso()
 {
     delete _anim;
+}
+void Perso::jump(double size)
+{
+    _forceY-=size*_h;
 }
 void Perso::turnRight(int iMin, int iMax)
 {
@@ -145,6 +153,7 @@ void Perso::turnLeft(int iMin, int iMax)
 void Perso::stopMoving()
 {
     _anim->stop();
+    _forceX=0;
 }
 Animation* Perso::getAnimation()
 {
@@ -154,6 +163,6 @@ void Perso::draw(SDL_Renderer *renderer)
 {
     _anim->draw(renderer,_x,_y,_w,_h);
     SDL_Rect rect = {int(_x),int(_y),_w,_h};
-    SDL_SetRenderDrawColor(renderer,255,100,100,255);
-    SDL_RenderDrawRect(renderer,&rect);
+    //SDL_SetRenderDrawColor(renderer,255,100,100,255);
+    //SDL_RenderDrawRect(renderer,&rect);
 }

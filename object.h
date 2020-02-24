@@ -22,6 +22,7 @@ class Object
         void setForce(double angle, double value);
         void addForce(double angle, double value);
         void setId(int id);
+        int getId() const;
         double getForceX() const;
         double getForceY() const;
         void startMove();
@@ -51,8 +52,10 @@ class Perso : public Object
         void turnRight(int iMin, int iMax);
         void turnLeft(int iMin, int iMax);
         void stopMoving();
-        void jump(int size = 2);
+        void jump(double size = 4);
         Animation* getAnimation();
     protected:
         Animation *_anim;
+        int _nbrJumpMax;
+        
 };

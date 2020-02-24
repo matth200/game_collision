@@ -58,7 +58,7 @@ bool World::getCollision(Object *b)
     {
         if(ob!=b)
         {
-            if(ob->getCollision(b))
+            if(ob->getCollision(b)&&ob->getId()==0)
                 return 1;
         }
     }
@@ -85,7 +85,11 @@ void World::manageMouvement(Object *b, double fps)
         {
             collisionY = 1;
             b->backPixelY(fps);
+            b->setForceY(0);
         }
+
+        if(collisionX)
+            b->setForceX(0);
 
         if(collisionX&&collisionY)
             b->endMove();
@@ -97,7 +101,6 @@ void World::draw(double fps)
     _perso->addForce(-90,_gravity*_uniteY/fps);
     
     //verification de collision précise pixel par pixel
-    //_perso->move(fps);
     manageMouvement(_perso,fps);
 
     //Affichage
