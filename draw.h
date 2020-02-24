@@ -15,6 +15,7 @@ public:
     void setTime(int ms);
     void start();
     void stop();
+    void addFlipHorizontal();
     void addImage(SDL_Renderer *renderer, const char* filename,int nbrX, int nbrY, int w, int h);
     void setCycle(int indexFirst, int indexLast);
     void draw(SDL_Renderer *renderer, int x, int y, int w, int h);
@@ -25,6 +26,7 @@ protected:
     int _indexMin, _indexMax;
     int _targetTexture;
     unsigned int _ms;
+    bool _flipHorizontal;
     bool _continuer;
 };
 

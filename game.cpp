@@ -36,13 +36,13 @@ void Game::core(){
             quit();
 
         if(getKeydown(RIGHT_KEY))
-            _world->getPerso()->turnRight(0,9);
+            _world->getPerso()->turnRight(9,13);
         else if(getKeydown(LEFT_KEY))
-            _world->getPerso()->turnLeft(10,19);
+            _world->getPerso()->turnLeft(9,13);
         if(getClicked(JUMP_KEY))
             _world->getPerso()->jump();
         if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
-            _world->getPerso()->stopMoving();
+            _world->getPerso()->stopMoving(0,3);
             
         draw();
 

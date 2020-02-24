@@ -1,7 +1,7 @@
 #include "world.h"
 using namespace std;
 
-World::World(SDL_Renderer *renderer):_uniteX(40),_uniteY(40),_gravity(9.81)
+World::World(SDL_Renderer *renderer):_uniteX(40),_uniteY(40),_gravity(9.81)//gravite terrestre
 {
     _renderer = renderer;
     _map = new MapLoader("levels/0.level");
@@ -32,10 +32,11 @@ World::World(SDL_Renderer *renderer):_uniteX(40),_uniteY(40),_gravity(9.81)
         }
     }
 
-    _perso = new Perso(x,y,40,50);
-    _perso->getAnimation()->addImage(_renderer,"images/spaceman.png",10,2,63,76);
-    _perso->getAnimation()->setTime(100);
-    _perso->getAnimation()->setCycle(0,9);//cycle sur l'image
+    _perso = new Perso(x,y,50,50);
+    _perso->getAnimation()->addImage(_renderer,"images/adventurer-Sheet.png",7,11,50,37);
+    _perso->centerCollision(30,50);
+    _perso->getAnimation()->setTime(150);
+    _perso->getAnimation()->setCycle(0,3);//cycle sur l'image
 
 }
 World::~World()
@@ -143,12 +144,7 @@ void World::draw(double fps)
     //Affichage
     _map->drawMap(_renderer);
     _perso->draw(_renderer);
-     if(_perso->getStateCollision(MASK_BOTTOM))
-    {
-        SDL_SetRenderDrawColor(_renderer,255,0,0,255);
-        int x = _perso->getPosX(),y = _perso->getPosY();
-        int w,h;
-        _perso->getSize(w,h);
-        SDL_RenderDrawLine(_renderer,x,y+h,x+w,y+h);
-    }
+    
+    //affichage des collision
+    _perso->drawCollision(_renderer);
 }

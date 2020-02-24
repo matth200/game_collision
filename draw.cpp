@@ -5,6 +5,7 @@ Animation::Animation(int ms):_ms(ms),_targetTexture(0),_w(0),_h(0), _nbrX(0), _n
 {
     _startTime = SDL_GetTicks();
     _continuer = 1;
+    _flipHorizontal = 0;
 }
 Animation::~Animation()
 {
@@ -17,6 +18,10 @@ void Animation::start()
 void Animation::stop()
 {
     _continuer = 0;
+}
+void Animation::addFlipHorizontal()
+{
+    _flipHorizontal = 1;
 }
 void Animation::addImage(SDL_Renderer *renderer, const char* filename,int nbrX, int nbrY, int w, int h)
 {
@@ -40,9 +45,12 @@ void Animation::setCycle(int indexFirst, int indexLast)
 {
     if(_indexMin!=indexFirst&&_indexMax!=indexLast)
         _targetTexture = indexFirst;
-        
+
     _indexMin = indexFirst;
     _indexMax = indexLast;
+
+    //init flipVertical
+    _flipHorizontal = 0;
 }
 void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
@@ -60,7 +68,11 @@ void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
         }
         //affichage de la texture en question
         SDL_Rect srcRect = {_targetTexture%_nbrX*_w,int(_targetTexture/_nbrX)*_h,_w,_h}, dstRect = {x,y,w,h};
-        SDL_RenderCopy(renderer,_texture,&srcRect,&dstRect);
+        SDL_Point center = {w/2.0,h/2.0};
+        if(_flipHorizontal)
+            SDL_RenderCopyEx(renderer,_texture,&srcRect,&dstRect,0,&center,static_cast<SDL_RendererFlip>(SDL_FLIP_HORIZONTAL));
+        else
+            SDL_RenderCopyEx(renderer,_texture,&srcRect,&dstRect,0,&center,static_cast<SDL_RendererFlip>(SDL_FLIP_NONE));
     }
     else
         SDL_Log("Il n'y a pas de texture à afficher");

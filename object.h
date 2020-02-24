@@ -17,6 +17,7 @@ class Object
         Object(double x,double y, int w, int h);
         ~Object();
         void setCollision(char state);
+        void centerCollision(int w, int h,SDL_Point *p=NULL);
         bool getStateCollision(char state);
         void move(double fps);
         void setPos(double x,double y);
@@ -39,6 +40,7 @@ class Object
         void frontPixelX(double fps);
         void frontPixelY(double fps);
         void endMove();
+        void drawCollision(SDL_Renderer *renderer);
         bool getCollision(Object *b);
         void draw(SDL_Renderer *renderer);
     protected:
@@ -48,6 +50,8 @@ class Object
         int _inMove;
         double _forceX, _forceY;
         char _collisionState;
+        int _cW, _cH;
+        SDL_Point _centerCollision;
 };
 
 
@@ -59,7 +63,7 @@ class Perso : public Object
         void draw(SDL_Renderer *renderer);
         void turnRight(int iMin, int iMax);
         void turnLeft(int iMin, int iMax);
-        void stopMoving();
+        void stopMoving(int iMin=0, int iMax=0);
         void jump(double size = 4);
         Animation* getAnimation();
     protected:
