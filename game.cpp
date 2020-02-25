@@ -1,7 +1,7 @@
 #include "game.h"
 using namespace std;
 
-Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
+Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_world(NULL){
 
     if(SDL_Init(SDL_INIT_VIDEO)<0)
         noticeError("problème de init()");
@@ -22,7 +22,9 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
     _menu = new Menu(_renderer);
 
     loadMap("resources/levels");
-    _world = new World(_renderer,_listMap[1].c_str());
+    nextLevel();
+
+    //bug getCLicked
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
@@ -36,6 +38,23 @@ Game::~Game(){
 
     TTF_Quit();
     SDL_Quit();
+}
+void Game::nextLevel()
+{  
+    if(_listMap.size()>_level)
+    {
+        delete _world;
+        _world = new World(_renderer,_listMap[_level].c_str());
+        _level++;
+    }
+    else{
+        SDL_Log("Plus de map!");
+    }
+}
+void Game::initLevel()
+{
+        delete _world;
+        _world = new World(_renderer,_listMap[_level-1].c_str());
 }
 void Game::loadMap(const char *folder)
 {
@@ -68,6 +87,11 @@ void Game::core(){
             if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
                 _world->getPerso()->stopMoving(0,3);
         }
+        else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==1)
+                nextLevel();
+        else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==-1)
+                initLevel();
+        
             
         draw();
 

@@ -225,7 +225,7 @@ bool Perso::isAlive() const
 }
 void Perso::draw(SDL_Renderer *renderer)
 {
-    if(_x<0||_y>HEIGHT||_x>WIDTH)
+    if(_y>HEIGHT)//tombe
         _alive = 0;
     if(_collisionState & MASK_BOTTOM)
         _nbrJump = 0;

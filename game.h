@@ -29,6 +29,8 @@ class Game
 
         void loadMap(const char* folder);
         void manageEvent();
+        void nextLevel();
+        void initLevel();
         void draw();
         void drawFps();
         bool getClicked(int key);
@@ -48,6 +50,7 @@ class Game
         double _actuelFPS;
         bool _state;
         TTF_Font *_font;
+        int _level;
  };
 
 #endif

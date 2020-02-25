@@ -8,12 +8,8 @@ Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleText
     _nrmlFont = TTF_OpenFont("resources/pixel_font.ttf",20);
 
     //fini
-    SDL_Surface *texte = TTF_RenderText_Solid(_bigFont,"FINII!!",SDL_Color{0,0,0,255});
-    _finiTexture = SDL_CreateTextureFromSurface(_renderer,texte);
-    SDL_FreeSurface(texte);
-    int w,h;
-    SDL_QueryTexture(_finiTexture,NULL,NULL,&w,&h);
-    _rectFini = {WIDTH/2.0-w/2.0,HEIGHT/2.0-h/2.0,w,h};
+    setTextCenter(_bigFont,_finiTexture,&_rectFini,"FINII!!");
+
     //Suivant
     setText(_nrmlFont,_suivantTexture,&_rectSuivant,"Appuyer sur ENTRER pour continuer...",WIDTH-500,HEIGHT-100,SDL_Color{100,0,100,255});
 
@@ -21,8 +17,10 @@ Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleText
     setText(_bigFont,_titleTexture,&_rectTitle,"Ninja Game",50,50);
 
     //bouton choice
-    setText(_nrmlFont,_choiceTexture,&_rectChoice,"Start the game",250,400,SDL_Color{255,100,100,255});
+    setText(_nrmlFont,_choiceTexture,&_rectChoice,"Start the game",250,400,SDL_Color{250,100,100,255});
 
+    //dead
+    setTextCenter(_bigFont,_deadTexture,&_rectDead,"DEADDDDD",SDL_Color{255,100,100});
 
     //animation perso
     _anim.setTime(100);
@@ -47,6 +45,15 @@ void Menu::setText(TTF_Font *font,SDL_Texture* &t,SDL_Rect *rect, const char *te
     SDL_QueryTexture(t,NULL,NULL,&w,&h);
     *rect = {x,y,w,h};
 }
+void Menu::setTextCenter(TTF_Font *font,SDL_Texture* &t,SDL_Rect *rect, const char *text,SDL_Color color)
+{
+    SDL_Surface *texte = TTF_RenderText_Solid(font,text,color);
+    t = SDL_CreateTextureFromSurface(_renderer,texte);
+    SDL_FreeSurface(texte);
+    int w,h;
+    SDL_QueryTexture(t,NULL,NULL,&w,&h);
+    *rect = {WIDTH/2.0-w/2.0,HEIGHT/2.0-h/2.0,w,h};
+}
 void Menu::drawFinish()
 {
     SDL_RenderCopy(_renderer,_finiTexture,NULL,&_rectFini);
@@ -54,7 +61,12 @@ void Menu::drawFinish()
 }
 void Menu::drawDead()
 {
-    SDL_RenderDrawRect(_renderer,&_rectTitle);
+    SDL_RenderCopy(_renderer,_deadTexture,NULL,&_rectDead);
+    SDL_RenderCopy(_renderer,_suivantTexture,NULL,&_rectSuivant);
+}
+void Menu::drawEndGame()
+{
+    
 }
 void Menu::drawStart()
 {

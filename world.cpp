@@ -151,7 +151,10 @@ void World::draw(double fps)
 
     //Affichage
     if(isFinish())
+    {
         _perso->setForce(0,0);
+        _perso->getAnimation()->stop();
+    }
     _map->drawMap(_renderer);
     _perso->draw(_renderer);
     
