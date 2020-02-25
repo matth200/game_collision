@@ -9,11 +9,9 @@
 #include <map>
 #include <filesystem>
 
+#include "menu.h"
 #include "draw.h"
 #include "world.h"
-
-#define WIDTH 1280
-#define HEIGHT 720
 
 #define RIGHT_KEY SDLK_d
 #define LEFT_KEY SDLK_q
@@ -32,12 +30,14 @@ class Game
         void loadMap(const char* folder);
         void manageEvent();
         void draw();
+        void drawFps();
         bool getClicked(int key);
         bool getKeydown(int key);
         void noticeError(const char* msg);
         bool getState()const {return _state;}
     protected:
         World *_world;
+        Menu *_menu;
 
         SDL_Window *_window;
         SDL_Renderer *_renderer;
@@ -47,6 +47,7 @@ class Game
         std::vector<std::string> _listMap;
         double _actuelFPS;
         bool _state;
+        TTF_Font *_font;
  };
 
 #endif

@@ -164,7 +164,7 @@ void Object::draw(SDL_Renderer *renderer)
     SDL_RenderDrawRect(renderer,&rect);
 }
 
-Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),_nbrJump(0),Object(x,y,w,h)
+Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),_alive(1),_nbrJump(0),Object(x,y,w,h)
 {
     _id = 1;
     _anim = new Animation();
@@ -219,8 +219,14 @@ Animation* Perso::getAnimation()
 {
     return _anim;
 }
+bool Perso::isAlive() const
+{
+    return _alive;
+}
 void Perso::draw(SDL_Renderer *renderer)
 {
+    if(_x<0||_y>HEIGHT||_x>WIDTH)
+        _alive = 0;
     if(_collisionState & MASK_BOTTOM)
         _nbrJump = 0;
 

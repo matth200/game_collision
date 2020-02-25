@@ -17,12 +17,18 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS){
     if(_renderer == NULL)
         noticeError("problème de createRenderer()");
 
-    loadMap("levels");
+    _font = TTF_OpenFont("resources/pixel_font.ttf",20);
+
+    _menu = new Menu(_renderer);
+
+    loadMap("resources/levels");
     _world = new World(_renderer,_listMap[1].c_str());
 
     SDL_SetRenderDrawBlendMode(_renderer,SDL_BLENDMODE_BLEND);
 }
 Game::~Game(){
+    TTF_CloseFont(_font);
+    delete _menu;
     delete _world;
 
     SDL_DestroyRenderer(_renderer);
@@ -51,15 +57,17 @@ void Game::core(){
         //keyboard events
         if(getClicked(SDLK_ESCAPE))
             quit();
-
-        if(getKeydown(RIGHT_KEY))
-            _world->getPerso()->turnRight(9,13);
-        else if(getKeydown(LEFT_KEY))
-            _world->getPerso()->turnLeft(9,13);
-        if(getClicked(JUMP_KEY))
-            _world->getPerso()->jump();
-        if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
-            _world->getPerso()->stopMoving(0,3);
+        if(_world->isFinish()==0)
+        {
+            if(getKeydown(RIGHT_KEY))
+                _world->getPerso()->turnRight(9,13);
+            else if(getKeydown(LEFT_KEY))
+                _world->getPerso()->turnLeft(9,13);
+            if(getClicked(JUMP_KEY))
+                _world->getPerso()->jump();
+            if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
+                _world->getPerso()->stopMoving(0,3);
+        }
             
         draw();
 
@@ -77,9 +85,30 @@ void Game::draw()
     SDL_SetRenderDrawColor(_renderer,100,100,100,255);
     SDL_RenderClear(_renderer);
 
-    _world->draw(_actuelFPS);
+    if(_menu->isStarted())
+    {
+        _world->draw(_actuelFPS);
+        if(_world->isFinish()==1)//reussi
+            _menu->drawFinish();
+        else if(_world->isFinish()==-1)//dead
+            _menu->drawDead();
+    }
+    else
+        _menu->drawStart();
+    drawFps();
 
     SDL_RenderPresent(_renderer);
+}
+void Game::drawFps()
+{
+    SDL_Surface *texte = TTF_RenderText_Solid(_font,to_string(int(_actuelFPS)).c_str(),SDL_Color{0,0,0,255});
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer,texte);
+    SDL_FreeSurface(texte);
+    int w,h;
+    SDL_QueryTexture(texture,NULL,NULL,&w,&h);
+    SDL_Rect rect = {30,30,w,h};
+    SDL_RenderCopy(_renderer,texture,NULL,&rect);
+    SDL_DestroyTexture(texture);
 }
 void Game::manageEvent()
 {
@@ -101,6 +130,7 @@ void Game::manageEvent()
                 _keys[_events.key.keysym.sym] = 0;
                 break;
         }
+        _menu->manageClick(_events);
     }
 }
 bool Game::getClicked(int key)

@@ -4,6 +4,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
+#define WIDTH 1280
+#define HEIGHT 720
+
 #include <chrono>
 typedef std::chrono::high_resolution_clock::time_point time_point;
 

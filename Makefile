@@ -1,4 +1,4 @@
-OBJS=main.cpp game.cpp draw.cpp object.cpp maploader.cpp world.cpp
+OBJS=main.cpp game.cpp draw.cpp object.cpp maploader.cpp world.cpp menu.cpp
 OBJ_NAME=app
 COMPILER=g++
 LINKER_OPTS=--std=c++17

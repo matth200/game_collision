@@ -56,7 +56,8 @@ void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
 {
     if(_texture!=NULL)
     {
-        if(SDL_GetTicks()-_startTime>=_ms)
+        uint32_t ellapsed = SDL_GetTicks()-_startTime;
+        if(ellapsed>=_ms)
         {
             //changement de la texture à afficher
             if(_continuer)
@@ -64,7 +65,7 @@ void Animation::draw(SDL_Renderer *renderer, int x, int y, int w, int h)
             if(_targetTexture>_indexMax)
                 _targetTexture = _indexMin;
                 
-            _startTime += _ms;
+            _startTime += int(ellapsed/_ms)*_ms;
         }
         //affichage de la texture en question
         SDL_Rect srcRect = {_targetTexture%_nbrX*_w,int(_targetTexture/_nbrX)*_h,_w,_h}, dstRect = {x,y,w,h};

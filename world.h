@@ -2,16 +2,16 @@
 #define INCLUDE_WORLD
 
 #include <SDL2/SDL.h>
+#include <vector>
 #include "object.h"
 #include "maploader.h"
-#include <vector>
 
 class World
 {
     public:
         World(SDL_Renderer *renderer,const char *fileMap);
         ~World();
-        bool isFinish() const;
+        int isFinish() const;
         void setGravity(double value);
         bool getCollision(Object *b);
         void manageMouvement(Object *b, double fps);
@@ -23,7 +23,7 @@ class World
         MapLoader *_map;
         std::vector<Object*> _objects;
         double _gravity;
-        bool _finished;
+        int _finished;
         SDL_Renderer *_renderer;
 };
 

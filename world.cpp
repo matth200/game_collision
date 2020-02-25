@@ -33,7 +33,7 @@ World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40)
     }
 
     _perso = new Perso(x,y,70,70);
-    _perso->getAnimation()->addImage(_renderer,"images/adventurer-Sheet.png",7,11,50,37);
+    _perso->getAnimation()->addImage(_renderer,"resources/images/adventurer-Sheet.png",7,11,50,37);
     _perso->centerCollision(30,70);
     _perso->getAnimation()->setTime(100);
     _perso->getAnimation()->setCycle(0,3);//cycle sur l'image
@@ -45,7 +45,7 @@ World::~World()
     for( auto ob : _objects)
         delete ob;
 }
-bool World::isFinish() const
+int World::isFinish() const
 {
     return _finished;
 }
@@ -63,8 +63,12 @@ bool World::getCollision(Object *b)
     {
         if(ob!=b)
         {
-            if(ob->getCollision(b)&&ob->getId()==0)
+            if(ob->getCollision(b)&&ob->getId()==0)//bloc normal
                 return 1;
+            if(ob->getCollision(b)&&ob->getId()==2)//bloc fini
+            {
+                _finished = 1;
+            }
         }
     }
     return 0;
@@ -146,9 +150,14 @@ void World::draw(double fps)
     manageMouvement(_perso,fps);
 
     //Affichage
+    if(isFinish())
+        _perso->setForce(0,0);
     _map->drawMap(_renderer);
     _perso->draw(_renderer);
     
     //affichage des collision
     //_perso->drawCollision(_renderer);
+    
+    if(!_perso->isAlive())
+        _finished = -1;
 }

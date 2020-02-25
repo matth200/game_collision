@@ -61,6 +61,7 @@ class Perso : public Object
         Perso(double x,double y, int w, int h);
         ~Perso();
         void draw(SDL_Renderer *renderer);
+        bool isAlive() const;
         void turnRight(int iMin, int iMax);
         void turnLeft(int iMin, int iMax);
         void stopMoving(int iMin=0, int iMax=0);
@@ -68,6 +69,7 @@ class Perso : public Object
         Animation* getAnimation();
     protected:
         Animation *_anim;
+        bool _alive;
         int _nbrJumpMax,_nbrJump;
         
 };
