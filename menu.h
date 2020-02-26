@@ -24,8 +24,8 @@ class Menu
         SDL_Texture *_backgroundPicture;
         SDL_Renderer *_renderer;
         Animation _anim;
-        SDL_Rect _rectTitle, _rectChoice, _rectFini, _rectSuivant, _rectDead;
-        SDL_Texture *_titleTexture, *_choiceTexture, *_finiTexture, *_suivantTexture, *_deadTexture;
+        SDL_Rect _rectTitle, _rectChoice, _rectFini, _rectSuivant, _rectDead, _rectEndGame;
+        SDL_Texture *_titleTexture, *_choiceTexture, *_finiTexture, *_suivantTexture, *_deadTexture, *_endGameTexture;
 };
 
 #endif

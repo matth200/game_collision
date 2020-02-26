@@ -8,7 +8,7 @@ Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleText
     _nrmlFont = TTF_OpenFont("resources/pixel_font.ttf",20);
 
     //fini
-    setTextCenter(_bigFont,_finiTexture,&_rectFini,"FINII!!");
+    setTextCenter(_bigFont,_finiTexture,&_rectFini,"NIVEAU REUSSI!!");
 
     //Suivant
     setText(_nrmlFont,_suivantTexture,&_rectSuivant,"Appuyer sur ENTRER pour continuer...",WIDTH-500,HEIGHT-100,SDL_Color{100,0,100,255});
@@ -21,6 +21,9 @@ Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleText
 
     //dead
     setTextCenter(_bigFont,_deadTexture,&_rectDead,"DEADDDDD",SDL_Color{255,100,100});
+
+    //end game
+    setTextCenter(_bigFont,_endGameTexture,&_rectEndGame,"FIN DU JEU!!!",SDL_Color{175,255,255});
 
     //animation perso
     _anim.setTime(100);
@@ -66,7 +69,8 @@ void Menu::drawDead()
 }
 void Menu::drawEndGame()
 {
-    
+    SDL_RenderCopy(_renderer,_endGameTexture,NULL,&_rectEndGame);
+    SDL_RenderCopy(_renderer,_suivantTexture,NULL,&_rectSuivant);
 }
 void Menu::drawStart()
 {

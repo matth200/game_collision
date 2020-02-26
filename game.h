@@ -24,6 +24,7 @@ class Game
     public:
         Game();
         ~Game();
+        void init();
         void core();
         void quit(int state=0){_state=state;}
 
@@ -33,6 +34,7 @@ class Game
         void initLevel();
         void draw();
         void drawFps();
+        void drawLevelIndication();
         bool getClicked(int key);
         bool getKeydown(int key);
         void noticeError(const char* msg);
@@ -51,6 +53,10 @@ class Game
         bool _state;
         TTF_Font *_font;
         int _level;
+        bool _endGame;
+
+        SDL_Texture *_levelTexture;
+        SDL_Rect _rectLevel;
  };
 
 #endif

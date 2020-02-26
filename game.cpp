@@ -1,7 +1,7 @@
 #include "game.h"
 using namespace std;
 
-Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_world(NULL){
+Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_endGame(0),_world(NULL),_menu(NULL){
 
     if(SDL_Init(SDL_INIT_VIDEO)<0)
         noticeError("problème de init()");
@@ -19,10 +19,7 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_
 
     _font = TTF_OpenFont("resources/pixel_font.ttf",20);
 
-    _menu = new Menu(_renderer);
-
-    loadMap("resources/levels");
-    nextLevel();
+    init();
 
     //bug getCLicked
 
@@ -39,15 +36,29 @@ Game::~Game(){
     TTF_Quit();
     SDL_Quit();
 }
+void Game::init()
+{
+    delete _menu;
+    _menu = new Menu(_renderer);
+
+    _level = 0;
+    _endGame = 0;
+    _state = 1;
+
+    loadMap("resources/levels");
+    nextLevel();
+}
 void Game::nextLevel()
 {  
     if(_listMap.size()>_level)
     {
         delete _world;
         _world = new World(_renderer,_listMap[_level].c_str());
+        _menu->setText(_font,_levelTexture,&_rectLevel,(string("Level ")+to_string(_level+1)).c_str(),50,HEIGHT-20);
         _level++;
     }
     else{
+        _endGame = 1;
         SDL_Log("Plus de map!");
     }
 }
@@ -67,6 +78,8 @@ void Game::loadMap(const char *folder)
         _listMap.push_back(string(file.path()));
         SDL_Log((string("file:")+string(file.path())).c_str());
     }
+    //trie ordre alphabétique
+    sort(_listMap.begin(),_listMap.end());
 }
 void Game::core(){
     while(_state==1)
@@ -76,6 +89,7 @@ void Game::core(){
         //keyboard events
         if(getClicked(SDLK_ESCAPE))
             quit();
+
         if(_world->isFinish()==0)
         {
             if(getKeydown(RIGHT_KEY))
@@ -87,8 +101,10 @@ void Game::core(){
             if(!getKeydown(LEFT_KEY)&&!getKeydown(RIGHT_KEY))
                 _world->getPerso()->stopMoving(0,3);
         }
-        else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==1)
+        else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==1&&_endGame==0)
                 nextLevel();
+        else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==1&&_endGame==1)
+                init();
         else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==-1)
                 initLevel();
         
@@ -112,13 +128,18 @@ void Game::draw()
     if(_menu->isStarted())
     {
         _world->draw(_actuelFPS);
-        if(_world->isFinish()==1)//reussi
+        if(_listMap.size()==_level+1&&_world->isFinish()==1)
+            _menu->drawEndGame();
+        else if(_world->isFinish()==1)//reussi
             _menu->drawFinish();
         else if(_world->isFinish()==-1)//dead
             _menu->drawDead();
+        else
+            SDL_RenderCopy(_renderer,_levelTexture,NULL,&_rectLevel);
     }
     else
         _menu->drawStart();
+    
     drawFps();
 
     SDL_RenderPresent(_renderer);
