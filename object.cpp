@@ -1,7 +1,7 @@
 #include "object.h"
 using namespace std;
 
-Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),_cH(h),_forceX(0),_forceY(0),_id(0),_inMove(-1),_collisionState(-1)
+Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),_cH(h),_forceX(0),_forceY(0),_id(0),_inMove(-1),_collisionState(-1),_topAdjustement(0)
 {
     _centerCollision = {_cW/2.0,_cH/2.0};
 }
@@ -24,6 +24,10 @@ void Object::centerCollision(int w, int h,SDL_Point *p)
 void Object::setCollision(char state)
 {
     _collisionState = state;
+}
+void Object::addTopCollision(int value)
+{
+    _topAdjustement=value;
 }
 bool Object::getStateCollision(char state)
 {
@@ -127,8 +131,8 @@ double Object::getForceY() const
 }
 bool Object::getCollision(Object *b)
 {
-    SDL_Rect rect_src = {_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0,_cW,_cH};
-    SDL_Rect rect_dst = {b->_x+b->_centerCollision.x-b->_cW/2.0,b->_y+b->_centerCollision.y-b->_cH/2.0,b->_cW,b->_cH};
+    SDL_Rect rect_src = {_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_cW,_cH+_topAdjustement};
+    SDL_Rect rect_dst = {b->_x+b->_centerCollision.x-b->_cW/2.0,b->_y+b->_centerCollision.y-b->_cH/2.0-b->_topAdjustement,b->_cW,b->_cH+b->_topAdjustement};
 
     if(SDL_HasIntersection(&rect_src,&rect_dst))
         return 1;
@@ -144,17 +148,17 @@ void Object::drawCollision(SDL_Renderer *renderer)
     if(getStateCollision(MASK_TOP))//plafond
     {
         SDL_SetRenderDrawColor(renderer,255,0,0,255);
-        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0);
+        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0-_topAdjustement);
     }
     if(getStateCollision(MASK_LEFT))//cote gauche
     {
         SDL_SetRenderDrawColor(renderer,255,0,0,255);
-        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0+_cH);
+        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0+_cH);
     }
     if(getStateCollision(MASK_RIGHT))//cote droit
     {
         SDL_SetRenderDrawColor(renderer,255,0,0,255);
-        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0+_cH);
+        SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0+_cH);
     }
 }
 void Object::draw(SDL_Renderer *renderer)

@@ -35,6 +35,7 @@ World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40)
     _perso = new Perso(x,y,70,70);
     _perso->getAnimation()->addImage(_renderer,"resources/images/adventurer-Sheet.png",7,11,50,37);
     _perso->centerCollision(30,70);
+    _perso->addTopCollision(-10);
     _perso->getAnimation()->setTime(100);
     _perso->getAnimation()->setCycle(0,3);//cycle sur l'image
 
@@ -159,7 +160,7 @@ void World::draw(double fps)
     _perso->draw(_renderer);
     
     //affichage des collision
-    //_perso->drawCollision(_renderer);
+    _perso->drawCollision(_renderer);
     
     if(!_perso->isAlive())
         _finished = -1;

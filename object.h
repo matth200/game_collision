@@ -18,6 +18,7 @@ class Object
         ~Object();
         void setCollision(char state);
         void centerCollision(int w, int h,SDL_Point *p=NULL);
+        void addTopCollision(int value);
         bool getStateCollision(char state);
         void move(double fps);
         void setPos(double x,double y);
@@ -51,6 +52,7 @@ class Object
         double _forceX, _forceY;
         char _collisionState;
         int _cW, _cH;
+        int _topAdjustement;
         SDL_Point _centerCollision;
 };
 
