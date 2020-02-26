@@ -65,7 +65,7 @@ class Perso : public Object
         void turnRight(int iMin, int iMax);
         void turnLeft(int iMin, int iMax);
         void stopMoving(int iMin=0, int iMax=0);
-        void jump(double size = 4);
+        void jump(double size = 4.5);
         Animation* getAnimation();
     protected:
         Animation *_anim;
