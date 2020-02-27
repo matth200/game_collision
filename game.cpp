@@ -54,13 +54,12 @@ void Game::nextLevel()
     {
         delete _world;
         _world = new World(_renderer,_listMap[_level].c_str());
-        _menu->setText(_font,_levelTexture,&_rectLevel,(string("Level ")+to_string(_level+1)).c_str(),50,HEIGHT-20);
+        _menu->setText(_font,_levelTexture,&_rectLevel,(string("Level ")+to_string(_level+1)).c_str(),50,HEIGHT-30);
         _level++;
     }
-    else{
-        _endGame = 1;
+    else
         SDL_Log("Plus de map!");
-    }
+    
 }
 void Game::initLevel()
 {
@@ -108,7 +107,10 @@ void Game::core(){
         else if(getKeydown(SDLK_RETURN)&&_world->isFinish()==-1)
                 initLevel();
         
-            
+        //check level
+        if(_listMap.size()==_level)
+            _endGame = 1;
+
         draw();
 
         //bien mais pas trés précis refaire avec chrono::high_resolution_clock
@@ -128,7 +130,7 @@ void Game::draw()
     if(_menu->isStarted())
     {
         _world->draw(_actuelFPS);
-        if(_listMap.size()==_level+1&&_world->isFinish()==1)
+        if(_world->isFinish()==1&&_endGame)
             _menu->drawEndGame();
         else if(_world->isFinish()==1)//reussi
             _menu->drawFinish();
