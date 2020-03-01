@@ -9,12 +9,7 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_
     if(TTF_Init()<0)
         noticeError("problème de initTTF()");
 
-    _window = SDL_CreateWindow("Test de fenêtre",SDL_WINDOWPOS_CENTERED,SDL_WINDOWPOS_CENTERED,WIDTH,HEIGHT,SDL_WINDOW_SHOWN);
-    if( _window == NULL)
-        noticeError("problème de createWindow()");
-    
-    _renderer = SDL_CreateRenderer(_window,-1,SDL_RENDERER_ACCELERATED);
-    if(_renderer == NULL)
+    if(SDL_CreateWindowAndRenderer(WIDTH,HEIGHT,0,&_window,&_renderer)<0);
         noticeError("problème de createRenderer()");
 
     _font = TTF_OpenFont("resources/pixel_font.ttf",20);

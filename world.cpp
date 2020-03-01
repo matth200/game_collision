@@ -160,7 +160,7 @@ void World::draw(double fps)
     _perso->draw(_renderer);
     
     //affichage des collision
-    _perso->drawCollision(_renderer);
+    //_perso->drawCollision(_renderer);
     
     if(!_perso->isAlive())
         _finished = -1;

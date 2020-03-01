@@ -139,11 +139,11 @@ void MapLoader::drawMap(SDL_Renderer *renderer)
                 break;
             case 1:
                 SDL_SetRenderDrawColor(renderer,150,100,150,255);
-                drawFillRect(renderer,x,y,_square_w,_square_h);
+                SDL_RenderFillRect(renderer,&rect);
                 break;
             case 3:
                 SDL_SetRenderDrawColor(renderer,0,0,0,255);
-                drawFillRect(renderer,x,y,_square_w,_square_h);
+                SDL_RenderFillRect(renderer,&rect);
                 break;
         }
     }
