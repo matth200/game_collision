@@ -4,9 +4,20 @@ using namespace std;
 MapLoader::MapLoader(const char *filename):_nbrX(0),_nbrY(0),_square_w(0),_square_h(0),_map_filename(filename),_xStart(0),_yStart(0),_xEnd(0),_yEnd(0)
 {
     srand(time(NULL));
+    _pageMax = 0;
+    _actualPage = 0;
+
+
 }
 MapLoader::~MapLoader()
 {
+    for( auto ob : _objects)
+        delete ob;
+}
+
+std::vector<Object*>* MapLoader::getObjects()
+{
+    return &_objects;
 }
 
 bool MapLoader::load(int square_w, int square_h)
@@ -19,17 +30,22 @@ bool MapLoader::load(int square_w, int square_h)
     }
     else{
         smatch reps;
-        string line;getline(mapFile,line);
+        string line = "";
+        getline(mapFile,line);
 
-        if(!regex_search(line,reps,regex("([0-9]+) ([0-9]+)")))
+        if(!regex_search(line,reps,regex("([0-9]+) ([0-9]+) ([0-9]+)")))
         {
             SDL_Log("fichier incorrect");
             return 0;
         }   
         _nbrX = stoi(reps[1]);
         _nbrY = stoi(reps[2]);
+        _pageMax = stoi(reps[3]);
         SDL_Log((string("Taille de la carte : ")+to_string(_nbrX)+"*"+to_string(_nbrY)).c_str());
+        
 
+        //lecture de une page
+        line = "";
         getline(mapFile,line);
         int page = stoi(line);
 
@@ -74,7 +90,38 @@ bool MapLoader::load(int square_w, int square_h)
                 break;
         }
     }
+
+    loadObjects();
+
     return 1;
+}
+void MapLoader::loadObjects()
+{
+    //add map inside _objects
+    for(int i(0);i<_map.size();i++)
+    {
+        int x = (i%_nbrX)*_square_w, y = int(i/_nbrX)*_square_h;
+        Object *ob = NULL;
+        switch(_map[i])
+        {
+            case 1://bloc normal
+                ob = new Object(x,y,_square_w,_square_h);
+                ob->setId(1);
+                _objects.push_back(ob);
+                break;
+            case 3://bloc de fin
+                ob = new Object(x,y,_square_w,_square_h);
+                ob->setId(3);
+                _objects.push_back(ob);
+                break;
+            case 4://bloc dynamique
+                ob = new Object(x,y,_square_w,_square_h);
+                ob->setId(4);
+                _objects.push_back(ob);
+                break;
+
+        }
+    }
 }
 void MapLoader::getSize(int &nbrX, int &nbrY)
 {
@@ -99,20 +146,13 @@ void MapLoader::getPosEnd(int &x, int &y)
     x = _xEnd;
     y = _yEnd;
 }
-bool MapLoader::isFinish(int x, int y)
-{
-    SDL_Rect rect = {x,y,_square_w,_square_h};
-    
-    return 0;
-}
-
 void MapLoader::drawMap(SDL_Renderer *renderer)
 {
-    for(int i(0);i<_map.size();i++)
+    for(int i(0);i<_objects.size();i++)
     {
-        int x = (i%_nbrX)*_square_w, y = int(i/_nbrX)*_square_h;
+        int x = _objects[i]->getPosX(), y = _objects[i]->getPosY();
         SDL_Rect rect = {x,y,_square_w,_square_h};
-        switch(_map[i])
+        switch(_objects[i]->getId())
         {
             case 1:
                 SDL_SetRenderDrawColor(renderer,150,100,150,255);

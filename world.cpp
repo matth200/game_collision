@@ -11,26 +11,7 @@ World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40)
     _map->getPosToStart(x,y);
 
     //add map inside _objects
-    vector<unsigned char>* mapChar = _map->getMap();
-    int nbrX,nbrY;
-    _map->getSize(nbrX,nbrY);
-    for(int i(0);i<mapChar->size();i++)
-    {
-        int x = (i%nbrX)*_uniteX, y = int(i/nbrX)*_uniteY;
-        Object *ob = NULL;
-        switch((*mapChar)[i])
-        {
-            case 1://bloc normal
-                ob = new Object(x,y,_uniteX,_uniteY);
-                _objects.push_back(ob);
-                break;
-            case 3://bloc de fin
-                ob = new Object(x,y,_uniteX,_uniteY);
-                ob->setId(2);
-                _objects.push_back(ob);
-                break;
-        }
-    }
+    _objects = _map->getObjects();
 
     _perso = new Perso(x,y,70,70);
     _perso->getAnimation()->addImage(_renderer,"resources/images/adventurer-Sheet.png",7,11,50,37);
@@ -43,7 +24,7 @@ World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40)
 World::~World()
 {
     delete _perso;
-    for( auto ob : _objects)
+    for( auto ob : *_objects)
         delete ob;
 }
 int World::isFinish() const
@@ -60,13 +41,13 @@ void World::setGravity(double value)
 }
 bool World::getCollision(Object *b)
 {
-    for(auto ob : _objects)
+    for(auto ob : *_objects)
     {
         if(ob!=b)
         {
-            if(ob->getCollision(b)&&ob->getId()==0)//bloc normal
+            if(ob->getCollision(b)&&(ob->getId()==1||ob->getId()==4))//bloc normal et bloc dynamique
                 return 1;
-            if(ob->getCollision(b)&&ob->getId()==2)//bloc fini
+            if(ob->getCollision(b)&&ob->getId()==3)//bloc fini
             {
                 _finished = 1;
             }
@@ -142,16 +123,28 @@ void World::manageMouvement(Object *b, double fps)
 
     b->setCollision(collision);
 }
+void World::manageGravity(double fps)
+{
+        //perso
+        _perso->addForce(-90,_gravity*_uniteY/fps);
+        //verification de collision précise pixel par pixel
+        manageMouvement(_perso,fps);
+
+        for(int i(0);i<_objects->size();i++)
+        {
+            if((*_objects)[i]->getId()==4)//bloc dynamique
+            {
+                //ajout de la gravite
+                (*_objects)[i]->addForce(-90,_gravity*_uniteY/fps);
+                //on gere le mouvement
+                manageMouvement((*_objects)[i],fps);
+            }
+        }
+}
 void World::draw(double fps)
 {
     if(!isFinish())
-    {
-        //gravity
-        _perso->addForce(-90,_gravity*_uniteY/fps);
-        
-        //verification de collision précise pixel par pixel
-        manageMouvement(_perso,fps);
-    }
+        manageGravity(fps);
     //Affichage
     if(isFinish())
     {

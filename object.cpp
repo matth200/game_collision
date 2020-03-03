@@ -4,6 +4,9 @@ using namespace std;
 Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),_cH(h),_forceX(0),_forceY(0),_id(0),_inMove(-1),_collisionState(-1),_topAdjustement(0)
 {
     _centerCollision = {_cW/2.0,_cH/2.0};
+    _weight = 0;
+    _rotation = 0;
+    _resolutionColision = 2;
 }
 Object::~Object()
 {
@@ -166,12 +169,6 @@ void Object::draw(SDL_Renderer *renderer)
     SDL_SetRenderDrawColor(renderer,255,175,100,255);
     SDL_Rect rect = {_x,_y,_w,_h};
     SDL_RenderDrawRect(renderer,&rect);
-}
-
-//Bloc
-Bloc::Bloc(double x,double y, int w, int h, double weight):Object(x,y,w,h),_weight(weight)
-{
-    _id = 2;
 }
 
 

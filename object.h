@@ -55,6 +55,11 @@ class Object
         int _cW, _cH;
         int _topAdjustement;
         SDL_Point _centerCollision;
+        
+        double _weight;
+        double _rotation;
+        int _resolutionColision;
+        std::vector<bool> _colisionList;
 };
 
 class Bloc : public Object
