@@ -157,7 +157,8 @@ keys_activation[pygame.MOUSEBUTTONDOWN] = 0
 tools = Inventaire(font,keys_activation)
 tools.addIcon((255,0,0),pygame.K_a,"Start(a)")
 tools.addIcon((0,255,0),pygame.K_z,"End(z)")
-tools.addIcon((0,255,255),pygame.K_w,"Bloc(w)")
+tools.addIcon((0,255,255),pygame.K_w,"Bloc G(w)")
+tools.addIcon((255,255,0),pygame.K_x,"Bloc Gleft(x)")
 
 while continuer:
     start = time.time()

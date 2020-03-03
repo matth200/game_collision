@@ -6,7 +6,6 @@ Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),
     _centerCollision = {_cW/2.0,_cH/2.0};
     _weight = 0;
     _rotation = 0;
-    _resolutionColision = 2;
 
     _outOfScreen = 0;
 }
@@ -178,13 +177,22 @@ bool Object::getOutOfScreen() const
 {
     return _outOfScreen;
 }
-void Object::draw(SDL_Renderer *renderer)
+void Object::draw(SDL_Renderer *renderer,Uint8 r, Uint8 g, Uint8 b)
 {   
     if(_outOfScreen==0)
     {
-        SDL_SetRenderDrawColor(renderer,255,175,100,255);
-        SDL_Rect rect = {_x,_y,_w,_h};
-        SDL_RenderDrawRect(renderer,&rect);
+        SDL_Rect rect = {0,0,_w,_h};
+
+        SDL_Texture *texture = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_RGBA8888,SDL_TEXTUREACCESS_TARGET,_w,_h);
+
+        SDL_SetRenderTarget(renderer,texture);
+        SDL_SetRenderDrawColor(renderer,r,g,b,255);
+        SDL_RenderFillRect(renderer,&rect);
+        SDL_SetRenderTarget(renderer,NULL);
+
+        rect = {_x,_y,_w,_h};
+        SDL_RenderCopyEx(renderer,texture,NULL,&rect,_rotation,&_centerCollision,static_cast<SDL_RendererFlip>(SDL_FLIP_NONE));
+        SDL_DestroyTexture(texture);
     }
 }
 

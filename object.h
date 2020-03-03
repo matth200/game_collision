@@ -44,7 +44,7 @@ class Object
         void endMove();
         void drawCollision(SDL_Renderer *renderer);
         bool getCollision(Object *b);
-        void draw(SDL_Renderer *renderer);
+        void draw(SDL_Renderer *renderer,Uint8 r, Uint8 g, Uint8 b);
         void setOutOfScreen(bool value);
         bool getOutOfScreen() const;
     protected:
@@ -61,8 +61,6 @@ class Object
         bool _outOfScreen;
         double _weight;
         double _rotation;
-        int _resolutionColision;
-        std::vector<bool> _colisionList;
 };
 
 class Bloc : public Object

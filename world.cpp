@@ -46,23 +46,17 @@ bool World::getCollision(Object *b)
     {
         if(ob!=b)
         {
-            if(ob->getCollision(b)&&(ob->getId()==1||ob->getId()==4))//bloc normal et bloc dynamique
+            if(ob->getCollision(b)&&ob->getId()!=3)//bloc normal et bloc dynamique
                 return 1;
-            if(ob->getCollision(b)&&ob->getId()==3)//bloc fini
-            {
+            if(ob->getCollision(b)&&ob->getId()==3&&b->getId()==1)//bloc final et joueur
                 _finished = 1;
-            }
         }
     }
     //perso
     if(_perso!=b)
     {       
-            if(_perso->getCollision(b)&&(_perso->getId()==1||_perso->getId()==4))//bloc normal et bloc dynamique
+            if(_perso->getCollision(b)&&b->getId()!=3)//bloc normal et bloc dynamique
                 return 1;
-            if(_perso->getCollision(b)&&_perso->getId()==3)//bloc fini
-            {
-                _finished = 1;
-            }
     }
     return 0;
 }
@@ -147,6 +141,13 @@ void World::manageGravity(double fps)
             {
                 //ajout de la gravite
                 (*_objects)[i]->addForce(-90,_gravity*_uniteY/fps);
+                //on gere le mouvement
+                manageMouvement((*_objects)[i],fps);
+            }
+            else if((*_objects)[i]->getId()==5)//bloc dynamique
+            {
+                //ajout de la gravite
+                (*_objects)[i]->addForce(-180,_gravity*_uniteY/fps);
                 //on gere le mouvement
                 manageMouvement((*_objects)[i],fps);
             }

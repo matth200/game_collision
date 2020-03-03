@@ -119,6 +119,11 @@ void MapLoader::loadObjects()
                 ob->setId(4);
                 _objects.push_back(ob);
                 break;
+            case 5://bloc dynamique
+                ob = new Object(x,y,_square_w,_square_h);
+                ob->setId(5);
+                _objects.push_back(ob);
+                break;
 
         }
     }
@@ -159,16 +164,16 @@ void MapLoader::drawMap(SDL_Renderer *renderer)
             switch(_objects[i]->getId())
             {
                 case 1:
-                    SDL_SetRenderDrawColor(renderer,150,100,150,255);
-                    SDL_RenderFillRect(renderer,&rect);
+                    _objects[i]->draw(renderer,150,100,150);
                     break;
                 case 3:
-                    SDL_SetRenderDrawColor(renderer,10,10,10,255);
-                    SDL_RenderFillRect(renderer,&rect);
+                    _objects[i]->draw(renderer,10,10,10);
                     break;
                 case 4:
-                    SDL_SetRenderDrawColor(renderer,0,255,255,255);
-                    SDL_RenderFillRect(renderer,&rect);
+                    _objects[i]->draw(renderer,0,255,255);
+                    break;
+                case 5:
+                    _objects[i]->draw(renderer,255,255,0);
                     break;
             }
         }
