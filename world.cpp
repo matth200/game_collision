@@ -144,12 +144,14 @@ void World::manageMouvement(Object *b, double fps)
 }
 void World::draw(double fps)
 {
-    //gravity
-    _perso->addForce(-90,_gravity*_uniteY/fps);
-    
-    //verification de collision précise pixel par pixel
-    manageMouvement(_perso,fps);
-
+    if(!isFinish())
+    {
+        //gravity
+        _perso->addForce(-90,_gravity*_uniteY/fps);
+        
+        //verification de collision précise pixel par pixel
+        manageMouvement(_perso,fps);
+    }
     //Affichage
     if(isFinish())
     {

@@ -30,6 +30,9 @@ bool MapLoader::load(int square_w, int square_h)
         _nbrY = stoi(reps[2]);
         SDL_Log((string("Taille de la carte : ")+to_string(_nbrX)+"*"+to_string(_nbrY)).c_str());
 
+        getline(mapFile,line);
+        int page = stoi(line);
+
         for(int i(0);i<_nbrY;i++)
         {
             getline(mapFile,line);
@@ -60,9 +63,6 @@ bool MapLoader::load(int square_w, int square_h)
         SDL_Rect rect = {x,y,_square_w,_square_h};
         switch(_map[i])
         {
-            case 0:
-                _backgroundMap[i] = rand()%4;
-                break;
             case 2:
                 //SDL_Log((string("x:")+to_string(x)+" y:"+to_string(y)).c_str());
                 _xStart = x;
@@ -114,35 +114,16 @@ void MapLoader::drawMap(SDL_Renderer *renderer)
         SDL_Rect rect = {x,y,_square_w,_square_h};
         switch(_map[i])
         {
-            case 0:
-                //mise en page aléatoire mais nul
-                /*
-                switch (_backgroundMap[i])
-                {
-                    case 0:
-                        SDL_SetRenderDrawColor(renderer,100,100,100,255);
-                        drawFillRect(renderer,x,y,_square_w,_square_h);
-                        break;
-                    case 1:
-                        SDL_SetRenderDrawColor(renderer,50,50,50,255);
-                        drawFillRect(renderer,x,y,_square_w,_square_h);
-                        break;
-                    case 2:
-                        SDL_SetRenderDrawColor(renderer,100,100,50,255);
-                        drawFillRect(renderer,x,y,_square_w,_square_h);
-                        break;
-                    case 3:
-                        SDL_SetRenderDrawColor(renderer,175,175,175,255);
-                        drawFillRect(renderer,x,y,_square_w,_square_h);
-                        break;
-                }*/
-                break;
             case 1:
                 SDL_SetRenderDrawColor(renderer,150,100,150,255);
                 SDL_RenderFillRect(renderer,&rect);
                 break;
             case 3:
-                SDL_SetRenderDrawColor(renderer,0,0,0,255);
+                SDL_SetRenderDrawColor(renderer,10,10,10,255);
+                SDL_RenderFillRect(renderer,&rect);
+                break;
+            case 4:
+                SDL_SetRenderDrawColor(renderer,0,255,255,255);
                 SDL_RenderFillRect(renderer,&rect);
                 break;
         }

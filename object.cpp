@@ -168,6 +168,14 @@ void Object::draw(SDL_Renderer *renderer)
     SDL_RenderDrawRect(renderer,&rect);
 }
 
+//Bloc
+Bloc::Bloc(double x,double y, int w, int h, double weight):Object(x,y,w,h),_weight(weight)
+{
+    _id = 2;
+}
+
+
+//Perso
 Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),_alive(1),_nbrJump(0),Object(x,y,w,h)
 {
     _id = 1;

@@ -30,7 +30,7 @@ class MapLoader
         int _square_w, _square_h;
         int _xStart, _yStart;
         int _xEnd, _yEnd;
-        std::map<int,char> _backgroundMap;
+        //std::map<int,char> _backgroundMap;
         std::string _map_filename;
         //std::vector<Object> _mapObject;
         std::vector<unsigned char> _map;

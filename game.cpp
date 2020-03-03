@@ -73,12 +73,11 @@ void Game::loadMap(const char *folder)
     _listMap.clear();
     _listMap.resize(0);
     for( auto& file : folderPath)
-    {
         _listMap.push_back(string(file.path()));
-        SDL_Log((string("file:")+string(file.path())).c_str());
-    }
     //trie ordre alphabétique
     sort(_listMap.begin(),_listMap.end());
+    for( auto t : _listMap)
+        SDL_Log((string("file:")+t).c_str());
 }
 void Game::core(){
     while(_state==1)

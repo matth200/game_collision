@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <cmath>
 #include <string>
+#include <vector>
 
 #include "draw.h"
 #define PI 3.14159265
@@ -54,6 +55,19 @@ class Object
         int _cW, _cH;
         int _topAdjustement;
         SDL_Point _centerCollision;
+};
+
+class Bloc : public Object
+{
+    public:
+        Bloc(double x, double y, int w, int h, double weight);
+        ~Bloc();
+    protected:
+        double _weight;
+        SDL_Point _gravityPoint;
+        double _rotation;
+        int _resolutionColision;
+        std::vector<bool> _colisionList;
 };
 
 
