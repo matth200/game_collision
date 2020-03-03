@@ -45,6 +45,8 @@ class Object
         void drawCollision(SDL_Renderer *renderer);
         bool getCollision(Object *b);
         void draw(SDL_Renderer *renderer);
+        void setOutOfScreen(bool value);
+        bool getOutOfScreen() const;
     protected:
         double _x,_y;
         int _id;
@@ -55,7 +57,8 @@ class Object
         int _cW, _cH;
         int _topAdjustement;
         SDL_Point _centerCollision;
-        
+
+        bool _outOfScreen;
         double _weight;
         double _rotation;
         int _resolutionColision;

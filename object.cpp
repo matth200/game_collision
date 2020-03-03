@@ -7,6 +7,8 @@ Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),
     _weight = 0;
     _rotation = 0;
     _resolutionColision = 2;
+
+    _outOfScreen = 0;
 }
 Object::~Object()
 {
@@ -14,8 +16,11 @@ Object::~Object()
 void Object::move(double fps)
 {
     //SDL_Log((to_string(_x)+" "+to_string(_y)).c_str());
-    _x+=_forceX/fps;
-    _y+=_forceY/fps;
+    if(_outOfScreen==0)
+    {
+        _x+=_forceX/fps;
+        _y+=_forceY/fps;
+    }
 }
 void Object::centerCollision(int w, int h,SDL_Point *p)
 {
@@ -37,8 +42,9 @@ bool Object::getStateCollision(char state)
     return _collisionState & state;
 }
 void Object::startMove()
-{
-    _inMove = 0;
+{   
+    if(_outOfScreen==0)
+        _inMove = 0;
 }
 void Object::backPixelX(double fps)
 {
@@ -137,7 +143,7 @@ bool Object::getCollision(Object *b)
     SDL_Rect rect_src = {_x+_centerCollision.x-_cW/2.0,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_cW,_cH+_topAdjustement};
     SDL_Rect rect_dst = {b->_x+b->_centerCollision.x-b->_cW/2.0,b->_y+b->_centerCollision.y-b->_cH/2.0-b->_topAdjustement,b->_cW,b->_cH+b->_topAdjustement};
 
-    if(SDL_HasIntersection(&rect_src,&rect_dst))
+    if(SDL_HasIntersection(&rect_src,&rect_dst)&&_outOfScreen==0)
         return 1;
     return 0;
 }
@@ -164,11 +170,22 @@ void Object::drawCollision(SDL_Renderer *renderer)
         SDL_RenderDrawLine(renderer,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0-_topAdjustement,_x+_centerCollision.x-_cW/2.0+_cW,_y+_centerCollision.y-_cH/2.0+_cH);
     }
 }
-void Object::draw(SDL_Renderer *renderer)
+void Object::setOutOfScreen(bool value)
 {
-    SDL_SetRenderDrawColor(renderer,255,175,100,255);
-    SDL_Rect rect = {_x,_y,_w,_h};
-    SDL_RenderDrawRect(renderer,&rect);
+    _outOfScreen = value;
+}
+bool Object::getOutOfScreen() const
+{
+    return _outOfScreen;
+}
+void Object::draw(SDL_Renderer *renderer)
+{   
+    if(_outOfScreen==0)
+    {
+        SDL_SetRenderDrawColor(renderer,255,175,100,255);
+        SDL_Rect rect = {_x,_y,_w,_h};
+        SDL_RenderDrawRect(renderer,&rect);
+    }
 }
 
 

@@ -151,21 +151,26 @@ void MapLoader::drawMap(SDL_Renderer *renderer)
     for(int i(0);i<_objects.size();i++)
     {
         int x = _objects[i]->getPosX(), y = _objects[i]->getPosY();
+        if(x+_square_w<0||x>WIDTH||y+_square_h<0||y>HEIGHT)//Stop mouvement because he is out of screen
+            _objects[i]->setOutOfScreen(1);
         SDL_Rect rect = {x,y,_square_w,_square_h};
-        switch(_objects[i]->getId())
+        if(_objects[i]->getOutOfScreen()==0)
         {
-            case 1:
-                SDL_SetRenderDrawColor(renderer,150,100,150,255);
-                SDL_RenderFillRect(renderer,&rect);
-                break;
-            case 3:
-                SDL_SetRenderDrawColor(renderer,10,10,10,255);
-                SDL_RenderFillRect(renderer,&rect);
-                break;
-            case 4:
-                SDL_SetRenderDrawColor(renderer,0,255,255,255);
-                SDL_RenderFillRect(renderer,&rect);
-                break;
+            switch(_objects[i]->getId())
+            {
+                case 1:
+                    SDL_SetRenderDrawColor(renderer,150,100,150,255);
+                    SDL_RenderFillRect(renderer,&rect);
+                    break;
+                case 3:
+                    SDL_SetRenderDrawColor(renderer,10,10,10,255);
+                    SDL_RenderFillRect(renderer,&rect);
+                    break;
+                case 4:
+                    SDL_SetRenderDrawColor(renderer,0,255,255,255);
+                    SDL_RenderFillRect(renderer,&rect);
+                    break;
+            }
         }
     }
 }

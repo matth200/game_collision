@@ -146,7 +146,7 @@ void World::manageGravity(double fps)
             if((*_objects)[i]->getId()==4)//bloc dynamique
             {
                 //ajout de la gravite
-                (*_objects)[i]->addForce(-180,_gravity*_uniteY/fps);
+                (*_objects)[i]->addForce(-90,_gravity*_uniteY/fps);
                 //on gere le mouvement
                 manageMouvement((*_objects)[i],fps);
             }
@@ -154,8 +154,10 @@ void World::manageGravity(double fps)
 }
 void World::draw(double fps)
 {
+    //pendant le jeu on gere les mouvements, la gravite et les collisions
     if(!isFinish())
         manageGravity(fps);
+
     //Affichage
     if(isFinish())
     {
