@@ -6,11 +6,21 @@ Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),
     _centerCollision = {_cW/2.0,_cH/2.0};
     _weight = 0;
     _rotation = 0;
+    _hypoForce = 0;
+    _debugSquare = 0;
 
     _outOfScreen = 0;
 }
 Object::~Object()
 {
+}
+void Object::addDebugSquare()
+{
+    _debugSquare = 1;
+}
+void Object::noDebugSquare()
+{
+    _debugSquare = 0;
 }
 void Object::move(double fps)
 {
@@ -43,32 +53,30 @@ bool Object::getStateCollision(char state)
 void Object::startMove()
 {   
     if(_outOfScreen==0)
+    {
         _inMove = 0;
+        _hypoForce = sqrt(pow(_forceX,2)+pow(_forceY,2));
+    }
 }
 void Object::backPixelX(double fps)
 {
-    double hypo = sqrt(pow(_forceX,2)+pow(_forceY,2));
-    _x-=_forceX/hypo/fps;
+    _x-=_forceX/_hypoForce/fps;
 }
 void Object::backPixelY(double fps)
 {
-    double hypo = sqrt(pow(_forceX,2)+pow(_forceY,2));
-    _y-=_forceY/hypo/fps;
+    _y-=_forceY/_hypoForce/fps;
 }
 void Object::frontPixelX(double fps)
 {
-    double hypo = sqrt(pow(_forceX,2)+pow(_forceY,2));
-    _x+=_forceX/hypo/fps;
+    _x+=_forceX/_hypoForce/fps;
 }
 void Object::frontPixelY(double fps)
 {
-    double hypo = sqrt(pow(_forceX,2)+pow(_forceY,2));
-    _y+=_forceY/hypo/fps;
+    _y+=_forceY/_hypoForce/fps;
 }
 bool Object::movePixel(double fps)
 {
-    double hypo = sqrt(pow(_forceX,2)+pow(_forceY,2));
-    if(_inMove==-1||_inMove>=hypo)
+    if(_inMove==-1||_inMove>=_hypoForce)
     {
         _inMove=-1;
         return 0;
@@ -79,6 +87,7 @@ bool Object::movePixel(double fps)
 void Object::endMove()
 {
     _inMove = -1;
+    _hypoForce = 0;
 }
 void Object::setId(int id)
 {
@@ -193,6 +202,12 @@ void Object::draw(SDL_Renderer *renderer,Uint8 r, Uint8 g, Uint8 b)
         rect = {_x,_y,_w,_h};
         SDL_RenderCopyEx(renderer,texture,NULL,&rect,_rotation,&_centerCollision,static_cast<SDL_RendererFlip>(SDL_FLIP_NONE));
         SDL_DestroyTexture(texture);
+
+        if(_debugSquare)
+        {
+            SDL_SetRenderDrawColor(renderer,255,100,100,255);
+            SDL_RenderDrawRect(renderer,&rect);
+        }
     }
 }
 
@@ -265,7 +280,9 @@ void Perso::draw(SDL_Renderer *renderer)
         _nbrJump = 0;
 
     _anim->draw(renderer,_x,_y,_w,_h);
-    SDL_Rect rect = {int(_x),int(_y),_w,_h};
-    //SDL_SetRenderDrawColor(renderer,255,100,100,255);
-    //SDL_RenderDrawRect(renderer,&rect);
+    SDL_Rect rect = {int(_x)+_centerCollision.x-_cW/2.0,int(_y)+_centerCollision.y-_cH/2.0-_topAdjustement,_cW,_cH+_topAdjustement};
+    if(_debugSquare){
+        SDL_SetRenderDrawColor(renderer,100,255,100,255);
+        SDL_RenderDrawRect(renderer,&rect);
+    }
 }

@@ -128,7 +128,7 @@ void Game::draw()
 
     if(_menu->isStarted())
     {
-        _world->draw(_actuelFPS);
+        _world->draw(FPS);
         if(_world->isFinish()==1&&_endGame)
             _menu->drawEndGame();
         else if(_world->isFinish()==1)//reussi

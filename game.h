@@ -17,7 +17,7 @@
 #define LEFT_KEY SDLK_q
 #define JUMP_KEY SDLK_SPACE
 
-#define FPS 60.0
+#define FPS 30.0
 
 class Game
  {

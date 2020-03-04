@@ -17,6 +17,8 @@ class Object
     public:
         Object(double x,double y, int w, int h);
         ~Object();
+        void addDebugSquare();
+        void noDebugSquare();
         void setCollision(char state);
         void centerCollision(int w, int h,SDL_Point *p=NULL);
         void addTopCollision(int value);
@@ -53,6 +55,7 @@ class Object
         int _w,_h;
         int _inMove;
         double _forceX, _forceY;
+        double _hypoForce;
         char _collisionState;
         int _cW, _cH;
         int _topAdjustement;
@@ -61,21 +64,9 @@ class Object
         bool _outOfScreen;
         double _weight;
         double _rotation;
-};
 
-class Bloc : public Object
-{
-    public:
-        Bloc(double x, double y, int w, int h, double weight);
-        ~Bloc();
-    protected:
-        double _weight;
-        SDL_Point _gravityPoint;
-        double _rotation;
-        int _resolutionColision;
-        std::vector<bool> _colisionList;
+        bool _debugSquare;
 };
-
 
 class Perso : public Object
 {
