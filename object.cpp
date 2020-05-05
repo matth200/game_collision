@@ -4,7 +4,7 @@ using namespace std;
 Object::Object(double x, double y, int w, int h):_x(x),_y(y),_w(w),_h(h),_cW(w),_cH(h),_forceX(0),_forceY(0),_id(0),_inMove(-1),_collisionState(-1),_topAdjustement(0)
 {
     _centerCollision = {_cW/2.0,_cH/2.0};
-    _weight = 0;
+    _weight = 20 ;
     _rotation = 0;
     _hypoForce = 0;
     _debugSquare = 0;
@@ -217,6 +217,7 @@ Perso::Perso(double x,double y, int w, int h):_anim(0),_nbrJumpMax(2),_alive(1),
 {
     _id = 1;
     _anim = new Animation();
+    _weight = 60;
 }
 Perso::~Perso()
 {
