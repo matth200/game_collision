@@ -35,7 +35,7 @@ $(BIN_DIRECTORY)/main.o: main.cpp
 	$(COMPILER) -o $@ -c $< $(LINKER_OPTS) $(LINKER_FLAGS)
 
 clean:
-	rm -f *.o
+	rm -f $(BIN_DIRECTORY)/*.o
 
 clean-all: clean
 	rm -f $(OBJ_NAME)

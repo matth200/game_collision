@@ -13,11 +13,11 @@ You can play multiple levelll
 
 <h3>Compilation</h3>
 
-You have to install g++, libsdl-dev, libsdl-image1.2-dev, libsdl-ttf2.0-dev and make<br/>
+You have to install g++, libsdl2-dev, libsdl2-image-dev, libsdl2-ttf-dev and make<br/>
 Then you just have to run "make"
 
 <code> ~$ sudo apt-get install build-essential</code><br/>
-<code> ~$ sudo apt-get install libsdl-dev libsdl-image1.2-dev libsdl-ttf2.0-dev</code><br/>
+<code> ~$ sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev</code><br/>
 <code> ~$ make</code><br/>
 
 <h3>Create your own level</h3>
