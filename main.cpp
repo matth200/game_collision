@@ -1,7 +1,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 
-#include "game.h"
+#include "src/game.h"
 
 using namespace std;
 

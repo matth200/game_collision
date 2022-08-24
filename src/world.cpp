@@ -14,7 +14,7 @@ World::World(SDL_Renderer *renderer,const char *fileMap):_uniteX(40),_uniteY(40)
     _objects = _map->getObjects();
 
     _perso = new Perso(x,y,70,70);
-    _perso->getAnimation()->addImage(_renderer,"resources/images/adventurer-Sheet.png",7,11,50,37);
+    _perso->getAnimation()->addImage(_renderer,"ressources/images/adventurer-Sheet.png",7,11,50,37);
     _perso->centerCollision(30,70);
     _perso->addTopCollision(-10);
     _perso->getAnimation()->setTime(100);
@@ -249,7 +249,7 @@ void World::manageGravity(double fps)
         if((*_objects)[i]->getId()==4)//bloc dynamique
         {
             //ajout de la gravite
-            (*_objects)[i]->addForce(-90,_gravity*_uniteY/fps);
+            (*_objects)[i]->setForce(-90,_gravity*_uniteY/fps);
             //on gere le mouvement
             objects.push_back((*_objects)[i]);
             //manageMouvement((*_objects)[i],fps);

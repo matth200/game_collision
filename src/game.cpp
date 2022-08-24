@@ -17,7 +17,7 @@ Game::Game():_window(NULL),_state(1),_renderer(NULL),_actuelFPS(FPS),_level(0),_
     if(_renderer == NULL)
         noticeError("problème de createRenderer()");
 
-    _font = TTF_OpenFont("resources/pixel_font.ttf",20);
+    _font = TTF_OpenFont("ressources/pixel_font.ttf",20);
 
     init();
 
@@ -45,7 +45,7 @@ void Game::init()
     _endGame = 0;
     _state = 1;
 
-    loadMap("resources/levels");
+    loadMap("ressources/levels");
     nextLevel();
 }
 void Game::nextLevel()

@@ -4,8 +4,8 @@ using namespace std;
 Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleTexture(0),_choiceTexture(0),_hover(0)
 {
     _renderer = renderer;
-    _bigFont = TTF_OpenFont("resources/pixel_font.ttf",70);
-    _nrmlFont = TTF_OpenFont("resources/pixel_font.ttf",20);
+    _bigFont = TTF_OpenFont("ressources/pixel_font.ttf",70);
+    _nrmlFont = TTF_OpenFont("ressources/pixel_font.ttf",20);
 
     //fini
     setTextCenter(_bigFont,_finiTexture,&_rectFini,"NIVEAU REUSSI!!");
@@ -27,7 +27,7 @@ Menu::Menu(SDL_Renderer *renderer):_start(0),_backgroundPicture(NULL),_titleText
 
     //animation perso
     _anim.setTime(100);
-    _anim.addImage(_renderer,"resources/images/adventurer-Sheet.png",7,11,50,37);
+    _anim.addImage(_renderer,"ressources/images/adventurer-Sheet.png",7,11,50,37);
     _anim.setCycle(0,3);
 }
 Menu::~Menu()
