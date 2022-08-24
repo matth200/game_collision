@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import time
 import pygame
-
+from os import path
 FPS = 30.0
 
 #function
@@ -44,6 +44,8 @@ class Map:
         self.bigMap = list()
         self.addNewMap()
 
+        self.directory = "../levels/"
+
         self.actualPage = 0
     def nextPage(self):
         self.actualPage+=1
@@ -53,10 +55,18 @@ class Map:
         self.actualPage-=1
         if self.actualPage < 0:
             self.actualPage = 0
-    def saveFile(self,filename):
+    def getNextLevel(self):
+        level = 0
+        while path.isfile(self.directory+str(level)+".level"):
+            level+=1
+        return level
+    def saveFile(self):
         print("Sauvegarde dans un fichier...")
+
+        filename = self.directory+str(self.getNextLevel())+".level"
+        print("Enregistrement dans "+filename)
         try:
-            with open("0.level","w") as file:
+            with open(filename,"w") as file:
                 file.write(str(int(width/square_w))+" "+str(int(height/square_h))+" "+str(len(self.bigMap))+"\n")
                 for imap, map in enumerate(self.bigMap):
                     file.write(str(imap)+"\n")    
@@ -175,7 +185,7 @@ while continuer:
                 if event.key == key:
                     keys_activation[key] = 1
             if event.key == pygame.K_RETURN:
-                cleverMap.saveFile("0.level")
+                cleverMap.saveFile()
         if event.type == pygame.KEYUP:
             for key in keys_activation.keys():
                 if event.key == key:
